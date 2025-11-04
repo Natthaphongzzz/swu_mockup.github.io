@@ -1,1 +1,250 @@
-<html><body>Index placeholder</body></html>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Energy & Water Dashboard — Mockup (Web)</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <!-- Top Navigation (Mode B) -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">⚡</div>
+      <div class="brand-text">
+        <strong>Mockup</strong>
+        <span>Energy • Water</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-page="overview">ภาพรวม</button>
+      <button class="nav-item" data-page="sensors">เซนเซอร์</button>
+      <button class="nav-item" data-page="control">แผงควบคุม</button>
+      <button class="nav-item" data-page="alerts">แจ้งเตือน</button>
+      <button class="nav-item" data-page="settings">ตั้งค่า</button>
+    </nav>
+    <div class="right">
+      <span class="theme-pill">Chart Theme: <b>Enterprise</b></span>
+      <div class="avatar">พว</div>
+    </div>
+  </header>
+
+  <main id="app" class="container">
+    <!-- Overview Page -->
+    <section id="page-overview" class="page active">
+      <div class="page-title">
+        <h1>ภาพรวม</h1>
+        <div class="filters">
+          <select id="ov-building"></select>
+          <select id="ov-metric">
+            <option value="power">ไฟฟ้า (kWh)</option>
+            <option value="water">น้ำ (m³)</option>
+          </select>
+          <select id="ov-range">
+            <option value="day">วัน</option>
+            <option value="week">สัปดาห์</option>
+            <option value="month">เดือน</option>
+            <option value="year">ปี</option>
+          </select>
+          <button id="ov-refresh" class="ghost">รีเฟรช</button>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <div class="card-title">สรุป</div>
+          <div id="ov-sum" class="summary-row">
+            <div class="kpi">
+              <div class="kpi-title">ภายใน</div>
+              <div class="kpi-value" id="kpi-internal">0</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-title">โหลดหลัก</div>
+              <div class="kpi-value" id="kpi-main">0</div>
+            </div>
+            <div class="kpi total">
+              <div class="kpi-title">รวมทั้งหมด</div>
+              <div class="kpi-value" id="kpi-total">0</div>
+              <div class="kpi-sub" id="kpi-diff">เทียบเมื่อวาน: —</div>
+            </div>
+          </div>
+          <div class="grid two mt-16">
+            <div>
+              <canvas id="ov-donut" height="240"></canvas>
+            </div>
+            <div>
+              <canvas id="ov-line" height="240"></canvas>
+            </div>
+          </div>
+          <div class="actions mt-12">
+            <button id="ov-full" class="primary">ดูแบบเต็มหน้าจอ</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">หมายเหตุ / แผนงาน</div>
+          <ul class="notes">
+            <li>Theme: Enterprise, โทน Apple-style บนพื้นหลังสีเทาอ่อน</li>
+            <li>Mock data อัปเดตตาม ช่วงเวลา/อาคาร/ประเภทข้อมูล</li>
+            <li>มี tooltip + hover marker บนกราฟ</li>
+            <li>รองรับรีเฟรชข้อมูล และ auto refresh ทุก 30 วิ (ปิด/เปิดได้)</li>
+          </ul>
+          <div class="actions">
+            <label class="switch">
+              <input type="checkbox" id="ov-auto"/>
+              <span></span>
+            </label>
+            <span class="muted">Auto refresh (30s)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sensors Page -->
+    <section id="page-sensors" class="page">
+      <div class="page-title">
+        <h1>สถานะเซนเซอร์</h1>
+        <div class="filters">
+          <input id="se-search" placeholder="ค้นหาอุปกรณ์..." />
+          <select id="se-type">
+            <option value="all">ทั้งหมด</option>
+            <option value="power">ไฟฟ้า</option>
+            <option value="water">น้ำ</option>
+          </select>
+          <select id="se-status">
+            <option value="all">ทั้งหมด</option>
+            <option value="ONLINE">ONLINE</option>
+            <option value="OFFLINE">OFFLINE</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <div>
+            <span class="dot green"></span> ออนไลน์: <b id="se-online">0</b>
+            <span class="ml-16"><span class="dot red"></span> ออฟไลน์: <b id="se-offline">0</b></span>
+          </div>
+          <button id="se-refresh" class="ghost">รีเฟรช</button>
+        </div>
+        <table class="table" id="se-table">
+          <thead>
+            <tr>
+              <th>สถานะ</th><th>ชื่ออุปกรณ์</th><th>ประเภท</th><th>อาคาร</th><th>อัปเดตล่าสุด</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Control Page -->
+    <section id="page-control" class="page">
+      <div class="page-title">
+        <h1>แผงควบคุม</h1>
+        <div class="filters">
+          <select id="ct-building"></select>
+          <select id="ct-metric">
+            <option value="power">ไฟฟ้า (kWh)</option>
+            <option value="water">น้ำ (m³)</option>
+          </select>
+          <select id="ct-range">
+            <option value="day">วันนี้</option>
+            <option value="week">สัปดาห์นี้</option>
+            <option value="month">เดือนนี้</option>
+            <option value="year">ปีนี้</option>
+          </select>
+          <button id="ct-full" class="ghost">เต็มหน้าจอ</button>
+          <button id="ct-export" class="ghost">Export CSV</button>
+          <button id="ct-control" class="danger">Control</button>
+        </div>
+      </div>
+      <div class="card">
+        <canvas id="ct-line" height="320"></canvas>
+        <div class="grid two mt-12">
+          <div class="pill stat">
+            <div>Average</div>
+            <div id="ct-avg" class="stat-value">0</div>
+          </div>
+          <div class="pill stat">
+            <div>Peak</div>
+            <div id="ct-peak" class="stat-value">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alerts Page -->
+    <section id="page-alerts" class="page">
+      <div class="page-title">
+        <h1>แจ้งเตือน</h1>
+        <div class="filters">
+          <select id="al-building"></select>
+          <select id="al-type">
+            <option value="all">ทั้งหมด</option>
+            <option value="offline">อุปกรณ์ออฟไลน์</option>
+            <option value="high">พลังงานสูงผิดปกติ</option>
+          </select>
+          <select id="al-range">
+            <option value="today">วันนี้</option>
+            <option value="week">สัปดาห์นี้</option>
+            <option value="month">เดือนนี้</option>
+          </select>
+          <button id="al-reset" class="ghost">รีเซ็ต</button>
+        </div>
+      </div>
+      <div class="card" id="al-list"></div>
+    </section>
+
+    <!-- Settings Page -->
+    <section id="page-settings" class="page">
+      <div class="page-title">
+        <h1>ตั้งค่า</h1>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <div class="card-title">โปรไฟล์</div>
+          <div class="form">
+            <label>ชื่อแสดงผล</label>
+            <input id="st-name" value="พิชญะ วัฒน์ศิริ" />
+            <label>อีเมล</label>
+            <input id="st-email" value="pichaya@university.ac.th" />
+            <label>หน่วยงาน</label>
+            <input id="st-dept" value="ฝ่ายบริหารระบบอาคาร" />
+            <label>อาคารที่รับผิดชอบ</label>
+            <select id="st-building"></select>
+            <div class="actions mt-12">
+              <button class="primary" id="st-save">บันทึก</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">เปลี่ยนรหัสผ่าน</div>
+          <div class="form">
+            <label>รหัสผ่านเดิม</label><input type="password" id="st-old"/>
+            <label>รหัสผ่านใหม่</label><input type="password" id="st-new"/>
+            <label>ยืนยันรหัสผ่านใหม่</label><input type="password" id="st-new2"/>
+            <div class="hint">อย่างน้อย 8 ตัวอักษร มีตัวเลขและอักษรผสม</div>
+            <div class="actions mt-12">
+              <button id="st-change" class="ghost">เปลี่ยนรหัสผ่าน</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Fullscreen modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-head">
+        <div class="title" id="modal-title">กราฟแบบเต็มหน้าจอ</div>
+        <button id="modal-close" class="ghost">ปิด</button>
+      </div>
+      <canvas id="modal-canvas" height="420"></canvas>
+    </div>
+  </div>
+
+  <script src="assets/charts.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
