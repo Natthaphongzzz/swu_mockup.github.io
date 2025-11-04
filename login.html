@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Energy Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
+    <h2 class="text-2xl font-semibold text-center mb-6">เข้าสู่ระบบ</h2>
+
+    <div class="mb-4">
+      <label class="block text-gray-600 mb-1">Username</label>
+      <input id="username" class="w-full px-3 py-2 rounded border focus:outline-none" placeholder="กรอก username" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-600 mb-1">Password</label>
+      <input id="password" type="password" class="w-full px-3 py-2 rounded border focus:outline-none" placeholder="กรอก password" />
+    </div>
+
+    <button
+      onclick="login()"
+      class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+      Login
+    </button>
+
+    <p id="msg" class="text-red-500 text-center mt-3 hidden">❌ Username หรือ Password ไม่ถูกต้อง</p>
+  </div>
+
+<script>
+function login() {
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
+
+  if (u === "admin" && p === "1234") {
+    localStorage.setItem("auth", "1");
+    window.location.href = "index.html"; // ✅ ไปหน้า dashboard
+  } else {
+    document.getElementById("msg").classList.remove("hidden");
+  }
+}
+
+// ✅ ถ้า login อยู่แล้ว → เข้า index อัตโนมัติ
+if (localStorage.getItem("auth") === "1") {
+  window.location.href = "index.html";
+}
+</script>
+</body>
+</html>
