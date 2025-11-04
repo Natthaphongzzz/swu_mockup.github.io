@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Dashboard — Mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🏢 Energy Dashboard (Mock)</div>
+    <nav class="nav">
+      <a href="#" class="active">ภาพรวม</a>
+      <a href="#" class="disabled" title="Mock stub">สถานะเซนเซอร์</a>
+      <a href="#" class="disabled" title="Mock stub">แผงควบคุม</a>
+      <a href="#" class="disabled" title="Mock stub">แจ้งเตือน</a>
+      <a href="#" class="disabled" title="Mock stub">ตั้งค่า</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Filters -->
+    <section class="card">
+      <div class="filters">
+        <label>
+          อาคาร
+          <select id="f-building">
+            <option>อาคารวิจัย</option>
+            <option>อาคารวิศวกรรม</option>
+            <option>ห้องสมุด</option>
+          </select>
+        </label>
+
+        <label>
+          ประเภท
+          <select id="f-metric">
+            <option>ไฟฟ้า</option>
+            <option>น้ำ</option>
+          </select>
+        </label>
+
+        <label>
+          ช่วงเวลา
+          <select id="f-range">
+            <option value="day">วัน</option>
+            <option value="week">สัปดาห์</option>
+            <option value="month">เดือน</option>
+            <option value="year">ปี</option>
+          </select>
+        </label>
+
+        <div id="subfilters">
+          <!-- dynamic sub filters (วันที่ / สัปดาห์ที่ / เดือน / ปี) -->
+        </div>
+
+        <button id="btn-reset" class="btn ghost">รีเซ็ต</button>
+      </div>
+    </section>
+
+    <!-- Summary section with Pie -->
+    <section class="card summary-card">
+      <div class="card-title">สรุป</div>
+      <div class="summary-grid">
+        <div class="pie-wrap">
+          <canvas id="pieUsage" width="220" height="220" aria-label="Pie chart"></canvas>
+        </div>
+        <div class="summary-data">
+          <div class="twocol">
+            <div class="metric-col">
+              <div class="muted">ภายใน</div>
+              <div class="big" id="vInternal">–</div>
+            </div>
+            <div class="metric-col">
+              <div class="muted">โหลดหลัก</div>
+              <div class="big" id="vMain">–</div>
+            </div>
+          </div>
+          <hr />
+          <div class="row space-between">
+            <div class="lead">รวมทั้งหมด</div>
+            <div class="lead" id="vTotal">–</div>
+          </div>
+          <div class="muted" id="vCompared">เทียบเมื่อวาน: <span class="badge up" id="vPercent">▲ 0.00%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Line chart -->
+    <section class="card">
+      <div class="card-title">การใช้พลังงานตามช่วงเวลา</div>
+      <canvas id="lineUsage" height="110"></canvas>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Mock data for demo • Chart.js • © 2025
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
